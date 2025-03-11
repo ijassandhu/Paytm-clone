@@ -5,7 +5,7 @@ import Users from "../components/Users";
 
 const Dashboard = () => {
   return (
-    <div className="bg-[#93C572] h-full">
+    <div className="bg-[#fff] h-full">
       <AppBar />
       <Balance />
       <Users />
