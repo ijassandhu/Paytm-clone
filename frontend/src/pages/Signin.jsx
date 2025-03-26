@@ -12,26 +12,31 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const username = email;
   const handleSignin = async (e) => {
     e.preventDefault();
-    console.log("Sign-in button clicked"); // ✅ Check if event fires
+    console.log("Sign-in button clicked");
 
-    // try {
-    const { data } = await axios.post(
-      "http://localhost:3000/api/v1/user/signin",
-      { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("Response from server:", data); // ✅ Log response
-    localStorage.setItem("token", data.token);
-    navigate("/dashboard");
-    // } catch (err) {
-    //   console.log("Error:", err.response ? err.response.data : err.message);
-    // }
+    try {
+      const payload = JSON.stringify({ email, password });
+      const { data } = await axios.post(
+        "http://localhost:3000/api/v1/user/signin",
+        { username, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Content-Length": payload.length,
+          },
+        }
+      );
+      console.log("control reached here");
+      console.log("Response from server:", data); // ✅ Log response
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard");
+    } catch (err) {
+      console.log("Error caught:", err); // ✅ Log error object
+      console.log("Error response:", err.response?.data); // ✅ Log server error
+    }
   };
 
   return (
@@ -46,6 +51,7 @@ const Signin = () => {
             }}
             placeholder="jaskeerat@gmail.com"
             label={"Email"}
+            autocomplete
           />
           <InputBox
             onChange={(e) => {
